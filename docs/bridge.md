@@ -70,7 +70,9 @@ The search covered every combination of:
 **Who is right:** Finance. README rule 5 (group policy for P&L) translates Lakeshore at the monthly average rate.
 
 **What should change, and where**
-- **Accounting:** re-translate Lakeshore's September R&M at 0.7210 in the September close (Lakeshore's P&L translation). This lowers Accounting's Q3 R&M by 11,681.61, to **USD 14,108,678.96**.
+- **Accounting:** post a correcting entry to Lakeshore's P&L translation that re-translates September R&M at the 0.7210 average.
+  - **If September is still open:** post it in September. Q3 R&M falls by 11,681.61, to **USD 14,108,678.96**.
+  - **If September is closed:** post it in October as a prior-period correction. Q3 stays as reported, and the correction is disclosed against it.
 - **To prevent a repeat:** keep one governed rate table with the rate type per use. P&L lines should always take the average; Finance's own rule is in `config/rules.toml` (`[fx] rate_column`).
 
 ## Candidates that are not reconciling items
@@ -90,7 +92,13 @@ Each was tested alone and in every combination. Accounting's total matches Finan
 | SUBTOTAL rows kept | +1,357,479.63 | Accounting excluded them. |
 | Any other data quality treatment not applied | 156,212.59 to 7,670,610.69 in size | None is consistent with Accounting's total. |
 
-7335-RM-HYD deserves a note. D-05 expected it to be a bridge item, and it isn't one: Accounting's total already contains it. The account-map gap still needs fixing, because the map is how Accounting classifies Lakeshore accounts. But it has no dollar effect on this quarter's bridge.
+7335-RM-HYD deserves a note. D-05 expected it to be a bridge item, and it isn't one.
+- **Why it isn't:** Accounting's total includes 7335-RM-HYD despite its absence from the map, so Accounting's close evidently doesn't depend on that map.
+- **Why it still matters:** the gap is a latent risk rather than a reconciling item. Any automated build that classifies Lakeshore accounts through the map would silently drop about USD 78,112 of R&M (CAD 108,339.06 at the September average rate).
+- **What to do:** Accounting should complete the map, and a completeness check should guard it.
+- **What this pipeline already does:** it reports the gap rather than failing on it, because D-05 deliberately includes the unmapped account.
+  - Data quality rule B07 lists every kept 73xx-RM account missing from the map: today 7335-RM-HYD, 23 lines.
+  - Check C14 confirms the map and the 73xx-RM range agree for every account the map does contain.
 
 ## Is Accounting's figure right?
 
