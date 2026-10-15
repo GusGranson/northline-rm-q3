@@ -10,8 +10,13 @@ Running log for Part 5. Append entries as they happen; don't reconstruct after t
 
 | Tool | Used for |
 |---|---|
-| Claude (chat) | Planning, strategy, reviewing findings, drafting write-ups |
-| Claude Code | Profiling, building the pipeline, verification runs |
+| Claude chat (Opus 5.5) | Planning and review partner: strategy, interpreting findings, designing verification, drafting instructions for Claude Code, drafting the write-ups |
+| Claude Code (Opus 5.5, extra-high effort) | Profiling, pipeline build, bridge search, sensitivity analysis, packaging |
+| Claude Code (Sonnet 5.5, medium effort) | Independent code-blind verification build. A different model was used on purpose, to reduce correlated errors. |
+
+**Workflow:**
+- Prompts for Claude Code were drafted in the planning chat and edited by the human before use.
+- `CLAUDE.md` sets the agent's guardrails: stage gates, no hardcoded rule values, propose-then-confirm for decisions, and log corrections here.
 
 ---
 
@@ -54,17 +59,68 @@ Running log for Part 5. Append entries as they happen; don't reconstruct after t
 - **Fix applied:** The bridge SQL now starts from an empty override table when none is configured. The same test then failed cleanly on C25 (residual 11,681.61, only `checks.csv` written), and the real build passes all 27 checks.
 - **Why it matters:** A check proves nothing until it has been seen to fail. A crash says "something broke"; a failed C25 says "the bridge doesn't close, by this much".
 
+### C-05 · 2026-10-15 · Verification design mixed bugs with judgment calls
+- **Tool / stage:** Claude (chat) · verification design
+- **What the AI got wrong:** Proposed a fully blind verification build from the raw files and README only. Any difference would then be ambiguous: an implementation bug, or just a different call on an ambiguity the human had already decided deliberately.
+- **How it was caught:** The human challenged what a match or mismatch would actually prove.
+- **Fix applied:** Code-blind instead of spec-blind.
+  - The verify received the README and `decisions.md`, but no code, config or outputs.
+  - It ran on a different model (Sonnet vs Opus) to reduce correlated errors.
+  - The Accounting files and the task PDF were withheld, so it couldn't drift toward the expected figure.
+- **Why it matters:** Every difference becomes actionable, because it must be a bug in one of the two builds. Result: a 39/39 cell match (V-01). Judgment calls are validated separately through the sensitivity analysis and the bridge (V-05).
+
+### C-06 · 2026-10-15 · Planned stages bundled into one prompt
+- **Tool / stage:** Claude (chat) · prompt drafting
+- **What the AI got wrong:** Suggested a single Claude Code prompt covering decisions, config and the full build. That was three stages in one turn, against the stage-gated workflow in `CLAUDE.md`.
+- **How it was caught:** The human noticed the unusually long agent reasoning and questioned the step size. The `CLAUDE.md` guardrail still held: the agent stopped to confirm decisions before building on them.
+- **Fix applied:** The remaining stages ran in Claude Code plan mode. The agent proposes a plan, the human approves or edits it, then the agent executes.
+- **Why it matters:** Smaller, gated steps keep judgment with the human and leave a commit per stage.
+
+### C-07 · 2026-10-15 · Branch mapping by prefix heuristic
+- **Tool / stage:** Claude Code · profiling → build
+- **What the AI got wrong:** It grouped the 14 raw Whse spellings by their first three letters. That was acceptable as a profiling lens, but not as a production rule: any new spelling would map silently, right or wrong.
+- **How it was caught:** Human review of the profiling assumptions before deciding treatments.
+- **Fix applied:** An explicit governed map of all 14 raw values to branch codes in `config/rules.toml` (D-04), plus a check that fails on any unmapped value. The failure path was tested in V-03.
+- **Why it matters:** For Finance numbers, an unknown value should stop the build, not be guessed.
+
+### C-08 · 2026-10-15 · Wrong prediction: 7335-RM-HYD as a reconciling item
+- **Tool / stage:** Claude (chat) · decisions and bridge planning
+- **What the AI got wrong:** Predicted that 7335-RM-HYD, which is missing from Accounting's account map, would be a reconciling item of about USD 78k, and wrote that expectation into D-05.
+- **How it was caught:** The exhaustive bridge search. The only combination that closes keeps 7335 in Accounting's total. Accounting's close evidently doesn't depend on the map.
+- **Fix applied:** The treatment was unchanged, since README rule 6 includes it. The item was reframed in the bridge and data quality log as a zero-impact-this-quarter governance finding: a latent risk that any map-driven automated build would silently drop USD 78k.
+- **Why it matters:** The bridge was not forced to match an expectation. The evidence overrode the prior.
+
+### C-09 · 2026-10-15 · Hardcoded values in the scenario engine
+- **Tool / stage:** Claude Code · bridge analysis (self-caught)
+- **What the AI got wrong:** `analysis/scenarios.py` hardcoded the quarter-end date and the Elmwood months in its sensitivity scenarios, against the `CLAUDE.md` rule that no rule values are hardcoded.
+- **How it was caught:** The agent's own review after its engine reproduced the Part 1 output.
+- **Fix applied:** Both values are now read from config.
+- **Why it matters:** If the scenario engine kept its own copy of the rules, its results would drift from the pipeline as soon as a rule changed.
+
 ---
 
 ## Prompts
 
-<!-- Add the instructions that worked best, verbatim or lightly trimmed, with one line on why. -->
+Drafted in the planning chat, edited by the human, run in Claude Code. Trimmed.
+
+**P-01 · Profiling, stage-gated**
+> This is the profiling stage only: no transforms, no pipeline, no config. Write profiling queries in DuckDB, one `.sql` file per raw file… Then write `profiling/findings.md`: every anomaly with evidence (row counts, sample rows, amounts). Do not decide treatments; flag anything where the README rule is ambiguous. Stop after that.
+
+*Why it worked:* it kept judgment with the human. Every treatment in `decisions.md` is a confirmed human decision, made from evidence.
+
+**P-02 · Code-blind verification** (fresh session, separate folder, Sonnet)
+> This folder contains a README with the Finance rules and `decisions.md` with confirmed decisions… Write a single independent script that produces `rm_q3_by_branch.csv`… Use exact decimal arithmetic for money. If something isn't covered, decide, document it in `verify_notes.md` and continue.
+
+*Why it worked:* the same spec with independent code means any difference is a bug. Withholding the Accounting files meant it couldn't steer toward the expected total.
+
+**P-03 · Bridge with uniqueness**
+> Identify the reconciling items that bridge Finance to Accounting to the cent… Explicitly check for alternative combinations that also close, not just the first one that does. For each final item, state who is right, the evidence, and what should change and where.
+
+*Why it worked:* it turned a plausible bridge into a proven unique one.
 
 ---
 
 ## Verification approach
-
-<!-- How AI output was checked: assertions, blind independent rerun, adversarial review. Fill in as built. -->
 
 ### V-01 · 2026-10-15 · Blind independent rebuild matches the pipeline to the cent
 - **Tool / stage:** Claude (Sonnet) as the independent builder; Claude Code (Opus) ran the comparison · verify
@@ -83,8 +139,26 @@ Running log for Part 5. Append entries as they happen; don't reconstruct after t
   - The bridge to Accounting is not covered.
 - **Details:** `verify/comparison.md`.
 
+### V-02 · 2026-10-15 · Agent respected the decision gate
+- The agent stopped and asked for confirmation before writing `docs/decisions.md` and building on it, as `CLAUDE.md` requires.
+- This held even when the prompt bundled several stages (C-06).
+
+### V-03 · 2026-10-15 · Failure-path test on the branch map
+- One Whse map entry was removed in a scratch copy of the config.
+- The build exited 1, named the unmapped value (`Elmwood`, 164 rows) and wrote only `checks.csv`, so no stale deliverable was left behind.
+
+### V-04 · 2026-10-15 · Determinism and no hardcoded rules
+- A clean rerun reproduces every output byte for byte.
+- A search of `sql/` and `run.py` finds no rule values outside comments.
+- The pipeline makes no LLM calls.
+
+### V-05 · 2026-10-15 · Judgment calls tested by sensitivity and the bridge
+- **Sensitivity.** `docs/sensitivity.md` reruns the build with the most plausible alternative for each decision, D-01 to D-12, and reports which ones are material.
+- **Bridge.** The exhaustive search (about 78 million combinations) found exactly one closing combination. In it, Accounting matches Finance's treatment on every decision except September FX and JE-0931. Accounting's own figure therefore independently corroborates the other treatments.
+- **Overlaps.** Interactions are scored on real tables, not by adding independent effects. The duplicates-kept and capex-kept effects both differ from their gross profiling amounts by exactly USD 20,511.96, the capex lines inside the duplicated export.
+
+### V-06 · 2026-10-15 · Hand check of the surprising record
+- Seeing 7335-RM-HYD inside Accounting's total (C-08), the human confirmed the raw records directly in the workbook: 23 September lines, CAD 108,339.06.
+- The workbook's own SUBTOTAL row for that account and month matches the same amount.
+
 ---
-
-## AI-written code estimate
-
-<!-- Fill in at the end. -->
