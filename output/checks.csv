@@ -1,0 +1,26 @@
+check_id,description,ref,passed,detail
+C00,Config: dedupe_keep and rounding mode are supported values; Whse map and reassignments have unique keys,"D-01, D-04, D-07",true,"dedupe_keep=latest, rounding_mode=half_up"
+C01,ERP-A: every TransDate parses in a configured format,D-03,true,0 rows fail
+C02,ERP-A: every raw Whse value is in the Whse map,D-04,true,0 rows unmapped: none
+C03,ERP-A: every Acct is a README group account,D-09,true,0 rows fail
+C04,"ERP-A: Line, Oper, Qty, UnitCost, ExtCost and ExportedAt all parse",D-07,true,0 rows fail
+C05,ERP-A: casting UnitCost and ExtCost to cents removes only float noise,D-07,true,0 rows changed by more than 1e-06
+C06,ERP-A: line key is complete and unique within every export,D-01,true,0 key repeats within an export
+C07,ERP-A: line key is unique after de-duplication,D-01,true,0 keys kept more than once
+C08,ERP-A: no Q3-dated line first appears in an export after the cut-off,D-02,true,0 late Q3 lines
+C09,ERP-A: no kept line reports under a branch on or after its close date,"README 4, D-12",true,0 rows
+C10,ERP-B: every row is a journal line or a SUBTOTAL row,D-06,true,0 unrecognised rows
+C11,ERP-B: every PostingDate parses in a configured format,D-03,true,0 rows fail
+C12,"ERP-B: every amount parses, and casting to cents removes only float noise","D-06, D-07",true,0 rows fail
+C13,ERP-B: every SUBTOTAL equals the journal lines of its account and month,D-06,true,0 subtotals do not tie
+C14,"Account map: for every mapped account, the 73xx-RM range and the map agree on R&M",D-05,true,0 disagreements
+C15,FX: one exact rate for every month with kept Lakeshore lines,"README 5, D-07",true,0 months without a usable rate
+C16,"Rounding: translated Lakeshore month totals are positive, so ROUND (half away from zero) is half-up",D-07,true,0 non-positive months
+C17,ERP-A: every line of the file is parsed as a row,CLAUDE.md,true,"11511 data lines in file, 11511 rows read"
+C18,"Row conservation: raw rows = sum of buckets, per source","CLAUDE.md, D-10",true,ERP-A raw 11511 = buckets 11511; ERP-B raw 1504 = buckets 1504
+C19,"Amount conservation: raw amount = sum of bucket amounts, per source","CLAUDE.md, D-10",true,ERP-A raw 20522808.31 = buckets 20522808.31; ERP-B raw 6731296.80 = buckets 6731296.80
+C20,DQ log: every rule reports rows and USD (blank USD only with a reason),"CLAUDE.md, D-11",true,0 rules incomplete
+C21,"Output: columns are exactly Branch, Month, RM_USD",CLAUDE.md,true,"Branch, Month, RM_USD"
+C22,"Output: Branch is a branch code, Month is YYYY-MM in Q3, RM_USD has 2 decimals and no symbols",CLAUDE.md,true,13 rows
+C23,Output: one row per branch and month,CLAUDE.md,true,"13 rows, 13 distinct"
+C24,Output: total equals kept ERP-A lines plus translated Lakeshore months,"README 5, 8",true,"output 14090228.96, lines 14090228.96"

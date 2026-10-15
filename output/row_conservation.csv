@@ -1,0 +1,12 @@
+source,bucket,rows,amount_native,currency
+ERP-A,raw,11511,20522808.31,USD
+ERP-A,capitalised_operation,174,409398.55,USD
+ERP-A,duplicate_copy,719,1340417.68,USD
+ERP-A,not_rm_account,3439,3469243.55,USD
+ERP-A,outside_period,1422,2570999.19,USD
+ERP-A,kept,5757,12732749.34,USD
+ERP-B,raw,1504,6731296.80,CAD
+ERP-B,not_rm_account,513,1135914.68,CAD
+ERP-B,outside_period,152,359401.75,CAD
+ERP-B,subtotal_row,31,3365648.40,CAD
+ERP-B,kept,808,1870331.97,CAD
