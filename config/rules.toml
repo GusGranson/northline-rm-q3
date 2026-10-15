@@ -1,30 +1,18 @@
-# Northline Q3 2026 R&M: rule values for the build.
+# Northline Q3 2026 R&M: Finance rules for the build.
 #
-# Single source of truth. The SQL in sql/ reads every rule value from here;
-# nothing in sql/ or run.py restates them. Each value cites where it comes
-# from: README rule n (data/raw/README.md) or D-nn (docs/decisions.md).
+# OWNER: Finance.
+# This file holds only the Finance rules from data/raw/README.md and the
+# decisions recorded in docs/decisions.md. Each value cites its source:
+# README rule n or D-nn. Everything else the build needs lives in
+# config/pipeline.toml (owned by Data Engineering).
 #
-# run.py loads this file into DuckDB:
+# Single source of truth for rule values: the SQL in sql/ reads every rule
+# from here, and nothing in sql/ or run.py restates them.
+#
+# run.py loads this file and config/pipeline.toml into DuckDB:
 #   a value or a list of values  -> variable <section>_<key>   e.g. getvariable('period_start')
 #   a list of tables             -> table cfg_<section>_<key>  e.g. cfg_erp_a_whse_map
-
-[sources]
-erp_a = "data/raw/erp_a_sro_transactions.csv"
-erp_b = "data/raw/erp_b_lakeshore_gl_detail.xlsx"
-account_map = "data/raw/account_map_lakeshore.csv"
-fx = "data/raw/fx_cad_usd.csv"
-
-# Each key is a table the SQL builds; run.py writes it to the path given.
-# `checks` is always written; the others only when every check passes.
-[outputs]
-rm_q3_by_branch = "output/rm_q3_by_branch.csv"
-dq_log = "output/dq_log.csv"
-row_conservation = "output/row_conservation.csv"
-line_buckets = "output/line_buckets.csv"
-checks = "output/checks.csv"
-
-[output_format]
-rm_q3_by_branch_columns = ["Branch", "Month", "RM_USD"]   # docs/exercise.pdf, Part 1
+# The two files share section names; a key defined in both fails the build.
 
 [period]                         # README rule 3: Q3 2026, each line by its own date
 start = 2026-07-01
@@ -34,19 +22,12 @@ end = 2026-09-30
 group_accounts = [6100, 6150, 6200]    # README rule 1: R&M is these group accounts only
 capitalised_operations = [75, 100]     # README rule 2: every line on these SRO operations is excluded
 
-[chart]
-group_accounts = [5100, 6100, 6150, 6200, 6300, 6400, 6500]   # README group-account table; D-09: anything else fails
-
-[branches]
-codes = ["RIV", "OAK", "PIN", "ELM", "LKS"]   # README branch table; also the output sort order
-
 [[branches.reassign]]            # README rule 4: Elmwood closed 31-Jul-2026. D-12: no ELM rows after July
 from_branch = "ELM"
 to_branch = "OAK"
 effective_from = 2026-08-01
 
 [erp_a]
-currency = "USD"                           # README: ERP-A costs are USD
 date_formats = ["%Y-%m-%d", "%m/%d/%Y"]    # D-03 (tried in this order)
 dedupe_key = ["SRO", "Line"]               # D-01
 dedupe_keep = "latest"                     # D-01: keep the copy with the latest ExportedAt ("latest" or "earliest")
@@ -71,8 +52,6 @@ whse_map = [
 ]
 
 [erp_b]
-branch = "LKS"                                  # README branch table: ERP-B is Lakeshore only
-currency = "CAD"                                # README: Lakeshore books in CAD
 date_formats = ["%d/%m/%Y"]                     # D-03
 subtotal_marker = "SUBTOTAL"                    # D-06: JournalID of subtotal rows (excluded, used as a control)
 journal_id_pattern = "^LK[0-9]+$"               # D-06: every other row must be a journal line

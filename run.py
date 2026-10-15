@@ -4,10 +4,11 @@
 # ///
 """Northline Q3 2026 R&M build.
 
-Thin runner. It loads config/rules.toml into an in-memory DuckDB, executes
-sql/NN_*.sql in order, writes the output tables named in [outputs], and fails
-(exit 1) if any row of the `checks` table is false. All logic lives in sql/
-and every rule value in config/rules.toml.
+Thin runner. It loads config/rules.toml (Finance rules, owned by Finance) and
+config/pipeline.toml (paths and settings, owned by Data Engineering) into an
+in-memory DuckDB, executes sql/NN_*.sql in order, writes the output tables
+named in [outputs], and fails (exit 1) if any row of the `checks` table is
+false. All logic lives in sql/ and every rule value in config/rules.toml.
 
 Usage (from anywhere):  uv run run.py
 """
@@ -20,8 +21,21 @@ from pathlib import Path
 import duckdb
 
 ROOT = Path(__file__).resolve().parent
-CONFIG = ROOT / "config" / "rules.toml"
+CONFIG_FILES = [ROOT / "config" / "rules.toml", ROOT / "config" / "pipeline.toml"]
 SQL_DIR = ROOT / "sql"
+
+
+def merge_config(into: dict, other: dict, path: str = "") -> dict:
+    """Merge config files section by section; a key defined in both is an error."""
+    for key, value in other.items():
+        name = f"{path}.{key}" if path else key
+        if isinstance(value, dict) and isinstance(into.get(key), dict):
+            merge_config(into[key], value, name)
+        elif key in into:
+            raise ValueError(f"config key '{name}' is defined in more than one config file")
+        else:
+            into[key] = value
+    return into
 
 
 def load_config(con: duckdb.DuckDBPyConnection, node: dict, prefix: str = "") -> None:
@@ -57,7 +71,9 @@ def write_output(con: duckdb.DuckDBPyConnection, table: str, path: Path) -> None
 
 def main() -> int:
     os.chdir(ROOT)  # config and SQL use repo-relative paths
-    config = tomllib.loads(CONFIG.read_text(encoding="utf-8"))
+    config: dict = {}
+    for config_file in CONFIG_FILES:
+        merge_config(config, tomllib.loads(config_file.read_text(encoding="utf-8")))
     outputs = {table: Path(path) for table, path in config["outputs"].items()}
     for path in outputs.values():
         path.unlink(missing_ok=True)  # never leave a stale deliverable behind

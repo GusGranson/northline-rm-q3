@@ -1,0 +1,11 @@
+rank,deviations_from_finance,miss_usd
+1,dedupe=none; period=all_dates; dates=ddmm; acct=trim_text; whse=trim_upper; capex=incl_second; reversals=excl; subtotal=incl; bdates=mmdd; fx=per-month 07:avg/08:me/09:me; include JE-0921,0.04
+2,dedupe=none; dates=ddmm; whse=trim_upper; capex=incl_all; reversals=excl; subtotal=incl; include JE-0918; include JE-0921; include JE-0927; include JE-0931; include JE-0940,0.05
+3,period=exported; dates=slash_dropped; acct=exact_text; capex=incl_all; subtotal=incl; fx=per-month 07:me/08:me/09:avg; include JE-0918; include JE-0921; include JE-0931,-0.10
+4,period=exported; dates=slash_dropped; acct=trim_text; capex=incl_all; rm=map; text=dropped; subtotal=incl; bdates=mmdd; fx=per-month 07:me/08:avg/09:avg; include JE-0918; include JE-0925; include JE-0933; include JE-0940,0.15
+5,dedupe=none; period=all_dates; acct=trim_text; whse=trim_upper; rm=map; text=dropped; subtotal=incl; bdates=mmdd; fx=per-month 07:avg/08:me/09:avg; include JE-0921; include JE-0925; include JE-0931; include JE-0940,0.30
+6,dedupe=none; whse=trim_upper; capex=incl_all; reversals=excl; rm=map; text=dropped; subtotal=incl; bdates=mmdd; fx=Q3 total at last month's average rate; include JE-0918,0.40
+7,dedupe=none; period=all_dates; acct=exact_text; whse=trim_upper; capex=incl_first; reversals=excl; subtotal=incl; bdates=mmdd; fx=per-month 07:me/08:avg/09:avg; include JE-0921; include JE-0925; include JE-0931; include JE-0933,0.46
+8,dedupe=none; dates=slash_dropped; acct=exact_text; text=dropped; subtotal=incl; fx=per-month 07:me/08:avg/09:avg; include JE-0918; include JE-0921; include JE-0931,0.74
+9,period=exported; dates=slash_dropped; acct=exact_text; capex=incl_first; reversals=excl; subtotal=incl; fx=per-month 07:me/08:me/09:me; include JE-0918; include JE-0921; include JE-0933; include JE-0940,-0.76
+10,dates=slash_dropped; acct=trim_text; capex=incl_all; text=dropped; subtotal=incl; fx=per-month 07:avg/08:avg/09:me; include JE-0918; include JE-0921; include JE-0927; include JE-0931; include JE-0933; include JE-0940,0.96

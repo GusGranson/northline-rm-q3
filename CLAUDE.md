@@ -4,7 +4,8 @@
 A take-home exercise. Build Q3 2026 repair & maintenance (R&M) cost in USD by branch and month from raw ERP files, log data quality issues, and reconcile to Accounting's reported total to the cent.
 
 - **Spec:** `data/raw/README.md` (Finance rules) and `docs/exercise.pdf` (task). The spec wins. If the data conflicts with it or is ambiguous, **stop and ask**. Don't improvise a rule.
-- **Rule values:** `config/rules.toml` is the single source of truth. Never hardcode rule values (accounts, operations, dates, FX type, dedupe keys) in SQL or Python; read them from config.
+- **Rule values:** `config/rules.toml` (owned by Finance) is the single source of truth. It holds only the Finance rules from the README and the decisions in `docs/decisions.md`. Never hardcode rule values (accounts, operations, dates, FX type, dedupe keys) in SQL or Python; read them from config.
+- **Pipeline settings:** `config/pipeline.toml` (owned by Data Engineering) holds everything else: file paths, output paths, required output columns, currencies, reference lists, and the `[bridge]` observations of how Accounting built its total (found by the bridge, not Finance rules). Don't put Finance rules there.
 
 ## How we work
 - **Stage-gated.** Do only the stage you are asked to do, then stop and report. Stages: profile → (human decides treatments) → build → verify → bridge → write-ups.

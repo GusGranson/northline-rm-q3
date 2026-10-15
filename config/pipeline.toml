@@ -1,0 +1,54 @@
+# Northline Q3 2026 R&M: pipeline settings for the build.
+#
+# OWNER: Data Engineering.
+# Everything the build needs that is not a Finance rule: file paths, output
+# paths, the required output columns, currencies and reference lists. Finance
+# rules and the decisions in docs/decisions.md live in config/rules.toml
+# (owned by Finance), not here.
+#
+# run.py loads this file and config/rules.toml into DuckDB:
+#   a value or a list of values  -> variable <section>_<key>   e.g. getvariable('sources_erp_a')
+#   a list of tables             -> table cfg_<section>_<key>
+# The two files share section names; a key defined in both fails the build.
+
+[sources]
+erp_a = "data/raw/erp_a_sro_transactions.csv"
+erp_b = "data/raw/erp_b_lakeshore_gl_detail.xlsx"
+account_map = "data/raw/account_map_lakeshore.csv"
+fx = "data/raw/fx_cad_usd.csv"
+accounting_close = "data/raw/accounting_close_summary.csv"   # bridge only: not an input to Finance's R&M (README rule 7)
+je_register = "data/raw/accounting_je_register_sep_close.csv"  # bridge only: reconciling items (README rule 7)
+
+# Each key is a table the SQL builds; run.py writes it to the path given.
+# `checks` is always written; the others only when every check passes.
+[outputs]
+rm_q3_by_branch = "output/rm_q3_by_branch.csv"
+dq_log = "output/dq_log.csv"
+row_conservation = "output/row_conservation.csv"
+line_buckets = "output/line_buckets.csv"
+bridge = "output/bridge.csv"
+checks = "output/checks.csv"
+
+[output_format]
+rm_q3_by_branch_columns = ["Branch", "Month", "RM_USD"]   # docs/exercise.pdf, Part 1
+
+[chart]
+group_accounts = [5100, 6100, 6150, 6200, 6300, 6400, 6500]   # README group-account table; D-09: anything else fails
+
+[branches]
+codes = ["RIV", "OAK", "PIN", "ELM", "LKS"]   # README branch table; also the output sort order
+
+[erp_a]
+currency = "USD"                                # README: ERP-A costs are USD
+
+[erp_b]
+branch = "LKS"                                  # README branch table: ERP-B is Lakeshore only
+currency = "CAD"                                # README: Lakeshore books in CAD
+
+# Bridge to Accounting (sql/09_bridge.sql). These record how Accounting built its
+# total, as found by the bridge search (analysis/scenarios.py, docs/bridge.md).
+# They are observations about Accounting, not Finance rules: Finance's own rate
+# stays in rules.toml. Months not listed used Finance's rate.
+[[bridge.accounting_fx]]
+month = "2026-09"
+rate_column = "MonthEndRate_CADtoUSD"           # bridge: September translated at month-end, not average

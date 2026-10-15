@@ -1,0 +1,21 @@
+decision,primary_alternative,alternative,change_in_q3_total_usd,change_pct_of_total,cells_moved,branch_months_moved,rows_added_to_output
+D-01,True,De-duplicate exact raw rows only (all columns except ExportedAt),807313.59,5.730,3,"OAK 2026-09 +231,792.73; PIN 2026-09 +285,687.10; RIV 2026-09 +289,833.76",0
+D-01,False,Keep the earliest copy instead of the latest,0.00,0.000,0,,0
+D-01,False,No de-duplication,1043815.38,7.408,3,"OAK 2026-09 +314,846.82; PIN 2026-09 +361,964.38; RIV 2026-09 +367,004.18",0
+D-02,True,ExportedAt as a filter: drop lines from exports after the cut-off,0.00,0.000,0,,0
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",-152074.63,-1.079,9,"OAK 2026-07 -20,116.27; OAK 2026-08 -20,556.72; OAK 2026-09 -25,850.90; PIN 2026-07 -12,860.32; PIN 2026-08 -9,281.43; PIN 2026-09 -22,087.84; RIV 2026-07 -30,059.15; RIV 2026-08 +8,847.12; RIV 2026-09 -20,109.12",0
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),-587637.33,-4.171,10,"ELM 2026-07 -8,171.09; OAK 2026-07 -54,266.68; OAK 2026-08 -91,452.04; OAK 2026-09 -55,917.35; PIN 2026-07 -47,800.87; PIN 2026-08 -66,233.39; PIN 2026-09 -76,757.02; RIV 2026-07 -70,916.08; RIV 2026-08 -53,709.96; RIV 2026-09 -62,412.85",0
+D-03,False,ERP-B dates read as MM/DD/YYYY where valid (spreadsheet-style auto-parse),-351340.03,-2.494,3,"LKS 2026-07 -109,621.22; LKS 2026-08 -122,823.39; LKS 2026-09 -118,895.42",0
+D-04,True,Whse by first three letters (the profiling lens),0.00,0.000,0,,0
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",-2151968.59,-15.273,10,"ELM 2026-07 -71,624.92; OAK 2026-07 -183,588.78; OAK 2026-08 -278,965.81; OAK 2026-09 -219,049.90; PIN 2026-07 -179,857.17; PIN 2026-08 -222,509.72; PIN 2026-09 -230,824.86; RIV 2026-07 -311,187.85; RIV 2026-08 -276,994.14; RIV 2026-09 -177,365.44",0
+D-05,True,Lakeshore R&M per Accounting's account map (7335-RM-HYD excluded),-78112.46,-0.554,1,"LKS 2026-09 -78,112.46",0
+D-06,True,Text amounts with thousands separators not parsed (dropped),-37724.23,-0.268,3,"LKS 2026-07 -14,056.69; LKS 2026-08 -7,426.70; LKS 2026-09 -16,240.84",0
+D-06,False,SUBTOTAL rows kept as postings,1357479.63,9.634,3,"LKS 2026-07 +400,642.80; LKS 2026-08 +475,554.34; LKS 2026-09 +481,282.49",0
+D-07,True,DOUBLE arithmetic with half-even rounding,0.00,0.000,0,,0
+D-08,True,Include manual JEs on R&M accounts posted within Q3,18450.00,0.131,1,"RIV 2026-09 +18,450.00",0
+D-08,False,"Include every manual JE on R&M accounts in the September close register, all in September",17810.00,0.126,2,"PIN 2026-09 -640.00; RIV 2026-09 +18,450.00",0
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),-1134261.79,-8.050,10,"ELM 2026-07 -40,831.75; OAK 2026-07 -112,432.66; OAK 2026-08 -127,840.98; OAK 2026-09 -166,157.13; PIN 2026-07 -144,843.06; PIN 2026-08 -88,199.15; PIN 2026-09 -81,636.00; RIV 2026-07 -102,155.84; RIV 2026-08 -132,929.64; RIV 2026-09 -137,235.58",0
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),-1627624.69,-11.551,10,"ELM 2026-07 -58,731.93; OAK 2026-07 -154,436.54; OAK 2026-08 -166,110.59; OAK 2026-09 -244,756.49; PIN 2026-07 -184,225.42; PIN 2026-08 -141,501.25; PIN 2026-09 -130,622.18; RIV 2026-07 -148,935.26; RIV 2026-08 -205,591.09; RIV 2026-09 -192,713.94",0
+D-10,True,Duplicate bucket tested last instead of first,0.00,0.000,0,,0
+D-11,True,DQ log shows indicative USD at the nearest Q3 rate,0.00,0.000,0,,0
+D-12,True,Closed branch written as 0.00 for months after its close,0.00,0.000,0,,2

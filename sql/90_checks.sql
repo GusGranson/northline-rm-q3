@@ -2,7 +2,6 @@
 -- 90 · Checks
 -- One row per assertion. run.py fails the build (exit 1) if any is false and
 -- then writes only output/checks.csv. `detail` shows what was counted.
--- The bridge residual check (CLAUDE.md) belongs to the bridge stage.
 -- =============================================================================
 
 CREATE TABLE checks (
@@ -241,3 +240,25 @@ FROM (
           + (SELECT sum(round(l.cad * fx.rate, getvariable('rounding_decimals')))
              FROM lks_month_cad AS l JOIN stg_fx AS fx USING (month))   AS expected_total
 );
+
+-- ---------------------------------------------------------------------------
+-- Bridge to Accounting (CLAUDE.md required check; exercise.pdf Part 3)
+-- ---------------------------------------------------------------------------
+
+INSERT INTO checks
+SELECT 'C25', 'Bridge: residual to Accounting''s reported total is exactly 0.00', 'CLAUDE.md, Part 3',
+       coalesce(amount_usd = 0, false), 'residual ' || coalesce(amount_usd::VARCHAR, 'not computed')
+FROM bridge
+WHERE line_type = 'residual';
+
+INSERT INTO checks
+SELECT 'C26', 'Bridge: one Accounting total for the period, and every item traces to a JE or an FX month (no plugs)',
+       'CLAUDE.md, Part 3',
+       (SELECT count(*) FROM stg_accounting_close
+         WHERE period = strftime(getvariable('period_start'), '%Y') || '-Q' || quarter(getvariable('period_start'))
+           AND usd IS NOT NULL) = 1
+       AND count(*) FILTER (WHERE amount_usd IS NULL
+                               OR (item_type = 'JE' AND source_ref NOT IN (SELECT je_id FROM stg_je))
+                               OR (item_type = 'FX' AND source_ref NOT IN (SELECT month FROM stg_fx))) = 0,
+       count(*) || ' items'
+FROM bridge_items;

@@ -37,7 +37,7 @@ Decided by Gus on 2026-10-15, after profiling.
 ### D-05 · Lakeshore 7335-RM-HYD is R&M (B-6, Q-5)
 - **Decision:** Include 7335-RM-HYD as R&M. README rule 6 (every local account in the 73xx-RM range is R&M) decides, not the account map. No group account is assigned, because the Branch/Month output does not need one.
 - **Why:** The spec says the account range decides. Accounting maintains the map, so the missing row is an Accounting map gap.
-- **Fix-where:** Accounting adds 7335-RM-HYD to `account_map_lakeshore`. Expected to be a bridge item: CAD 108,339.06, about USD 78,112 at the September average rate. The bridge gives the exact figure.
+- **Fix-where:** Accounting adds 7335-RM-HYD to `account_map_lakeshore`. The bridge shows Accounting's total already includes it, so it is not a reconciling item; the map row is still missing.
 - **Enforced by:** `[erp_b] rm_local_account_pattern` in config. The DQ log reports local accounts that match the pattern but are missing from the map (rows, CAD, USD). Check: for every account in the map, the pattern and the map agree on whether it is R&M.
 
 ### D-06 · ERP-B subtotal rows and text amounts (B-1, B-2, Q-6)
@@ -52,7 +52,7 @@ Decided by Gus on 2026-10-15, after profiling.
 - **Enforced by:** Check: the cast to DECIMAL(18,2) may only remove float noise (each value differs from its source text by less than 0.000001). Otherwise the build fails.
 
 ### D-08 · Manual journal entries (J-1, Q-8)
-- **Decision:** Deferred to the bridge. JEs are not an input to Finance's R&M (README rule 7). Accounting's total has no breakdown, so the bridge arithmetic will show which JEs it includes. That result is recorded here then.
+- **Decision:** Manual JEs are not an input to Finance's R&M (README rule 7). The bridge shows Accounting's total includes JE-0931 (+18,450.00, RIV 6150 accrual posted 30-Sep 22:14) and excludes JE-0940 (posted 2-Oct). JE-0931 is reconciling item R1; no other JE affects R&M.
 
 ## Build conventions (proposed by Claude, confirmed by Gus)
 

@@ -47,6 +47,13 @@ Running log for Part 5. Append entries as they happen; don't reconstruct after t
 - **Fix applied:** Totals are now per entity only (US USD 24,540.83; CA CAD 3,302.00), with a comment saying why there is no all-entity total.
 - **Why it matters:** A mixed-currency total would carry straight into the bridge as a wrong reconciling amount.
 
+### C-04 · 2026-10-15 · Bridge crashed instead of failing its residual check
+- **Tool / stage:** Claude Code · bridge
+- **What the AI got wrong:** `sql/09_bridge.sql` assumed the config table of Accounting's FX overrides always exists. With no override listed, which legitimately means "Accounting used Finance's rate every month", the build stopped with a missing-table error instead of reporting a non-zero residual.
+- **How it was caught:** A deliberate failure test: rerunning the build against a scratch config without the September override, expecting check C25 to fail with an 11,681.61 residual.
+- **Fix applied:** The bridge SQL now starts from an empty override table when none is configured. The same test then failed cleanly on C25 (residual 11,681.61, only `checks.csv` written), and the real build passes all 27 checks.
+- **Why it matters:** A check proves nothing until it has been seen to fail. A crash says "something broke"; a failed C25 says "the bridge doesn't close, by this much".
+
 ---
 
 ## Prompts
@@ -58,6 +65,23 @@ Running log for Part 5. Append entries as they happen; don't reconstruct after t
 ## Verification approach
 
 <!-- How AI output was checked: assertions, blind independent rerun, adversarial review. Fill in as built. -->
+
+### V-01 · 2026-10-15 · Blind independent rebuild matches the pipeline to the cent
+- **Tool / stage:** Claude (Sonnet) as the independent builder; Claude Code (Opus) ran the comparison · verify
+- **What was checked:** `output/rm_q3_by_branch.csv` from the pipeline (commit `3b72320`).
+- **Method:**
+  - A separate Sonnet session rebuilt Part 1 from the raw data files, the README and `docs/decisions.md` only. It had no access to our code, config, outputs or profiling findings.
+  - Its build, `verify/build_rm_q3.py`, uses Python, `Decimal` and openpyxl, with no DuckDB, so every parser and the decimal library differ from the pipeline's.
+  - Its script was rerun on a copy of its inputs and reproduced its CSV byte for byte.
+  - The two CSVs were then compared cell by cell in plain Python.
+  - Its script was also read line by line for differences its notes don't mention.
+- **Result:** 39 of 39 cells identical: 13 rows, same order, both totalling USD 14,090,228.96. The files differ only in line endings (CRLF vs LF).
+- **Its calls:** `verify_notes.md` lists six calls, not three. Three are genuinely undocumented: ExtCost used as given, the exact 73xx-RM pattern, and the sort order. The other three restate decisions or scope. All six agree with the pipeline.
+- **Its script:** Reading it found five places where its checks are narrower than ours, including a D-02 check on the kept copy rather than the first appearance. None changes a number here.
+- **Limits:**
+  - Both builds were given the same decisions, so the match tests the implementation, not the treatments.
+  - The bridge to Accounting is not covered.
+- **Details:** `verify/comparison.md`.
 
 ---
 

@@ -1,0 +1,6 @@
+step,line_type,source_ref,description,branch,month,amount_usd,running_total_usd
+0,finance,output/rm_q3_by_branch.csv,Finance R&M for the period (sum of the Part 1 output),,,14090228.96,14090228.96
+1,reconciling_item_je,JE-0931,"Manual JE JE-0931 on 6150, posted 2026-09-30 22:14: Accrual – outside hydraulic cylinder repair, invoice pending. In Accounting's total; not in Finance's (README rule 7)",RIV,2026-09,18450.00,14108678.96
+2,reconciling_item_fx,2026-09,Lakeshore 2026-09 R&M (CAD 667520.79) translated by Accounting at MonthEndRate_CADtoUSD 0.7385 instead of AvgRate_CADtoUSD 0.7210 (README rule 5),LKS,2026-09,11681.61,14120360.57
+3,accounting,accounting_close_summary.csv,Accounting R&M as reported in the close,,,14120360.57,
+4,residual,,Accounting reported minus (Finance + reconciling items); must be 0.00,,,0.00,

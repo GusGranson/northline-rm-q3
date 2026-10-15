@@ -1,0 +1,69 @@
+decision,primary_alternative,alternative,branch,month,finance_usd,alternative_usd,change_usd
+D-01,True,De-duplicate exact raw rows only (all columns except ExportedAt),OAK,2026-09,1579502.88,1811295.61,231792.73
+D-01,True,De-duplicate exact raw rows only (all columns except ExportedAt),PIN,2026-09,1209270.36,1494957.46,285687.10
+D-01,True,De-duplicate exact raw rows only (all columns except ExportedAt),RIV,2026-09,1326944.21,1616777.97,289833.76
+D-01,False,No de-duplication,OAK,2026-09,1579502.88,1894349.70,314846.82
+D-01,False,No de-duplication,PIN,2026-09,1209270.36,1571234.74,361964.38
+D-01,False,No de-duplication,RIV,2026-09,1326944.21,1693948.39,367004.18
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",OAK,2026-07,1310446.01,1290329.74,-20116.27
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",OAK,2026-08,1478995.18,1458438.46,-20556.72
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",OAK,2026-09,1579502.88,1553651.98,-25850.90
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",PIN,2026-07,1145925.90,1133065.58,-12860.32
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",PIN,2026-08,1350571.29,1341289.86,-9281.43
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",PIN,2026-09,1209270.36,1187182.52,-22087.84
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",RIV,2026-07,1522852.26,1492793.11,-30059.15
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",RIV,2026-08,1540190.70,1549037.82,8847.12
+D-03,True,"ERP-A slash dates read day-first where valid, else MM/DD (e.g. pandas dayfirst=True)",RIV,2026-09,1326944.21,1306835.09,-20109.12
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),ELM,2026-07,268050.55,259879.46,-8171.09
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),OAK,2026-07,1310446.01,1256179.33,-54266.68
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),OAK,2026-08,1478995.18,1387543.14,-91452.04
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),OAK,2026-09,1579502.88,1523585.53,-55917.35
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),PIN,2026-07,1145925.90,1098125.03,-47800.87
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),PIN,2026-08,1350571.29,1284337.90,-66233.39
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),PIN,2026-09,1209270.36,1132513.34,-76757.02
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),RIV,2026-07,1522852.26,1451936.18,-70916.08
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),RIV,2026-08,1540190.70,1486480.74,-53709.96
+D-03,False,ERP-A slash dates read strictly as DD/MM/YYYY (impossible dates dropped),RIV,2026-09,1326944.21,1264531.36,-62412.85
+D-03,False,ERP-B dates read as MM/DD/YYYY where valid (spreadsheet-style auto-parse),LKS,2026-07,400642.79,291021.57,-109621.22
+D-03,False,ERP-B dates read as MM/DD/YYYY where valid (spreadsheet-style auto-parse),LKS,2026-08,475554.34,352730.95,-122823.39
+D-03,False,ERP-B dates read as MM/DD/YYYY where valid (spreadsheet-style auto-parse),LKS,2026-09,481282.49,362387.07,-118895.42
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",ELM,2026-07,268050.55,196425.63,-71624.92
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",OAK,2026-07,1310446.01,1126857.23,-183588.78
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",OAK,2026-08,1478995.18,1200029.37,-278965.81
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",OAK,2026-09,1579502.88,1360452.98,-219049.90
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",PIN,2026-07,1145925.90,966068.73,-179857.17
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",PIN,2026-08,1350571.29,1128061.57,-222509.72
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",PIN,2026-09,1209270.36,978445.50,-230824.86
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",RIV,2026-07,1522852.26,1211664.41,-311187.85
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",RIV,2026-08,1540190.70,1263196.56,-276994.14
+D-04,False,"Whse trimmed and upper-cased only (full names unmapped, dropped)",RIV,2026-09,1326944.21,1149578.77,-177365.44
+D-05,True,Lakeshore R&M per Accounting's account map (7335-RM-HYD excluded),LKS,2026-09,481282.49,403170.03,-78112.46
+D-06,True,Text amounts with thousands separators not parsed (dropped),LKS,2026-07,400642.79,386586.10,-14056.69
+D-06,True,Text amounts with thousands separators not parsed (dropped),LKS,2026-08,475554.34,468127.64,-7426.70
+D-06,True,Text amounts with thousands separators not parsed (dropped),LKS,2026-09,481282.49,465041.65,-16240.84
+D-06,False,SUBTOTAL rows kept as postings,LKS,2026-07,400642.79,801285.59,400642.80
+D-06,False,SUBTOTAL rows kept as postings,LKS,2026-08,475554.34,951108.68,475554.34
+D-06,False,SUBTOTAL rows kept as postings,LKS,2026-09,481282.49,962564.98,481282.49
+D-08,True,Include manual JEs on R&M accounts posted within Q3,RIV,2026-09,1326944.21,1345394.21,18450.00
+D-08,False,"Include every manual JE on R&M accounts in the September close register, all in September",PIN,2026-09,1209270.36,1208630.36,-640.00
+D-08,False,"Include every manual JE on R&M accounts in the September close register, all in September",RIV,2026-09,1326944.21,1345394.21,18450.00
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),ELM,2026-07,268050.55,227218.80,-40831.75
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),OAK,2026-07,1310446.01,1198013.35,-112432.66
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),OAK,2026-08,1478995.18,1351154.20,-127840.98
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),OAK,2026-09,1579502.88,1413345.75,-166157.13
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),PIN,2026-07,1145925.90,1001082.84,-144843.06
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),PIN,2026-08,1350571.29,1262372.14,-88199.15
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),PIN,2026-09,1209270.36,1127634.36,-81636.00
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),RIV,2026-07,1522852.26,1420696.42,-102155.84
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),RIV,2026-08,1540190.70,1407261.06,-132929.64
+D-09,True,Acct compared as trimmed text ('6100.0' not recognised),RIV,2026-09,1326944.21,1189708.63,-137235.58
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),ELM,2026-07,268050.55,209318.62,-58731.93
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),OAK,2026-07,1310446.01,1156009.47,-154436.54
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),OAK,2026-08,1478995.18,1312884.59,-166110.59
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),OAK,2026-09,1579502.88,1334746.39,-244756.49
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),PIN,2026-07,1145925.90,961700.48,-184225.42
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),PIN,2026-08,1350571.29,1209070.04,-141501.25
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),PIN,2026-09,1209270.36,1078648.18,-130622.18
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),RIV,2026-07,1522852.26,1373917.00,-148935.26
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),RIV,2026-08,1540190.70,1334599.61,-205591.09
+D-09,False,Acct compared as exact text (' 6100' and '6100.0' not recognised),RIV,2026-09,1326944.21,1134230.27,-192713.94

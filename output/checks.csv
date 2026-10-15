@@ -24,3 +24,5 @@ C21,"Output: columns are exactly Branch, Month, RM_USD",CLAUDE.md,true,"Branch, 
 C22,"Output: Branch is a branch code, Month is YYYY-MM in Q3, RM_USD has 2 decimals and no symbols",CLAUDE.md,true,13 rows
 C23,Output: one row per branch and month,CLAUDE.md,true,"13 rows, 13 distinct"
 C24,Output: total equals kept ERP-A lines plus translated Lakeshore months,"README 5, 8",true,"output 14090228.96, lines 14090228.96"
+C25,Bridge: residual to Accounting's reported total is exactly 0.00,"CLAUDE.md, Part 3",true,residual 0.00
+C26,"Bridge: one Accounting total for the period, and every item traces to a JE or an FX month (no plugs)","CLAUDE.md, Part 3",true,2 items

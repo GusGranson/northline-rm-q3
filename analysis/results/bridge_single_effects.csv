@@ -1,0 +1,37 @@
+candidate,effect_on_finance_total_usd
+ERP-A dedupe=none,1043815.38
+ERP-A period=all_dates,2001671.99
+ERP-A period=exported,568825.47
+ERP-A dates=ddmm,-587637.33
+ERP-A dates=ddmm_fallback,-152074.63
+ERP-A dates=slash_dropped,-641452.77
+ERP-A acct=trim_text,-1134261.79
+ERP-A acct=exact_text,-1627624.69
+ERP-A whse=trim_upper,-2151968.59
+ERP-A whse=exact_code,-6176307.59
+ERP-A capex=incl_all,409398.55
+ERP-A capex=incl_first,250478.27
+ERP-A capex=incl_second,158920.28
+ERP-A reversals=excl,156212.59
+ERP-A custnum=excl,-7670610.69
+Lakeshore rm=map,-78112.46
+Lakeshore text=dropped,-37724.23
+Lakeshore subtotal=incl,1357479.63
+Lakeshore bdates=mmdd,-351340.03
+FX per-month 07:avg/08:avg/09:me,11681.61
+FX per-month 07:avg/08:me/09:avg,-983.23
+FX per-month 07:avg/08:me/09:me,10698.38
+FX per-month 07:me/08:avg/09:avg,-1641.98
+FX per-month 07:me/08:avg/09:me,10039.63
+FX per-month 07:me/08:me/09:avg,-2625.21
+FX per-month 07:me/08:me/09:me,9056.40
+FX Q3 total at last month's month-end rate,23760.54
+FX Q3 total at last month's average rate,-8970.27
+FX each month at the quarter's mean average rate,693.12
+"include JE-0918 (RIV 6400, posted 2026-09-29 16:02)",6120.33
+"include JE-0921 (OAK 5100, posted 2026-09-29 17:40)",-2210.00
+"include JE-0925 (PIN 6500, posted 2026-09-30 09:15)",845.10
+"include JE-0927 (LKS 7400-FUEL, posted 2026-09-30 11:48)",2380.74
+"include JE-0931 (RIV 6150, posted 2026-09-30 22:14)",18450.00
+"include JE-0933 (OAK 6300, posted 2026-09-30 23:05)",1975.40
+"include JE-0940 (PIN 6100, posted 2026-10-02 10:20)",-640.00
