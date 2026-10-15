@@ -1,0 +1,10 @@
+Entity,Account,entries,amount
+CA,(entity total),1,3302.00
+CA,7400-FUEL,1,3302.00
+US,(entity total),6,24540.83
+US,5100,1,-2210.00
+US,6100,1,-640.00
+US,6150,1,18450.00
+US,6300,1,1975.40
+US,6400,1,6120.33
+US,6500,1,845.10

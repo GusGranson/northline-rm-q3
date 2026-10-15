@@ -1,0 +1,4 @@
+column_name,inferred_type
+Period,VARCHAR
+Metric,VARCHAR
+USD,DOUBLE

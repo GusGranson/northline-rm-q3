@@ -1,0 +1,14 @@
+column_name,inferred_type
+SRO,VARCHAR
+Line,BIGINT
+Oper,BIGINT
+Whse,VARCHAR
+TransDate,VARCHAR
+TransType,VARCHAR
+Acct,DOUBLE
+Item,VARCHAR
+Qty,BIGINT
+UnitCost,DOUBLE
+ExtCost,DOUBLE
+CustNum,VARCHAR
+ExportedAt,TIMESTAMP

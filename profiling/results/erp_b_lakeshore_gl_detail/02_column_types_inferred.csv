@@ -1,0 +1,7 @@
+column_name,inferred_type
+JournalID,VARCHAR
+PostingDate,VARCHAR
+LocalAccount,VARCHAR
+Description,VARCHAR
+AmountCAD,DOUBLE
+Source,VARCHAR

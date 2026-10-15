@@ -1,0 +1,7 @@
+col_pos,column_name,rows,null_or_empty,whitespace_only,distinct_raw,distinct_trimmed_upper,leading_or_trailing_space,parses_as_decimal,min_len,max_len,min_text,max_text
+1,JournalID,1504,0,0,1474,1474,0,0,7,8,LK88001,SUBTOTAL
+2,PostingDate,1504,0,0,104,104,0,0,10,10,01/07/2026,31/10/2026
+3,LocalAccount,1504,0,0,7,7,0,0,8,13,5100-LAB,7500-FLUID
+4,Description,1504,0,0,38,38,0,0,4,30,Billable labour,Subtotal 7500-FLUID 2026-10
+5,AmountCAD,1504,0,0,1501,1501,0,1486,3,17,-1041.14,997.92
+6,Source,1504,0,31,4,4,0,0,0,3,"",PR

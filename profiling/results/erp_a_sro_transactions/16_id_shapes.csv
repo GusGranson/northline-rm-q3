@@ -1,0 +1,5 @@
+column_name,shape,rows,min_text,max_text
+CustNum,A9999,6910,C1044,C3310
+CustNum,<NULL>,4601,,
+Line,9,11511,1,8
+SRO,A999999,11511,S041001,S043388

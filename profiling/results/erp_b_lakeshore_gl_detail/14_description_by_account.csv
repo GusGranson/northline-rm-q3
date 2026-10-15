@@ -1,0 +1,8 @@
+LocalAccount,Description,journal_lines,journal_cad
+5100-LAB,Billable labour,240,577834.54
+7310-RM-PARTS,Repair parts,420,923176.00
+7320-RM-SVC,Outside repair service,161,383584.41
+7330-RM-LAB,Repair labour,307,697017.74
+7335-RM-HYD,Hydraulic repairs,23,108339.06
+7400-FUEL,Fuel,192,390395.17
+7500-FLUID,Fluids & lubricants,130,285301.48

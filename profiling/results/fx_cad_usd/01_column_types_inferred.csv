@@ -1,0 +1,4 @@
+column_name,inferred_type
+Month,VARCHAR
+AvgRate_CADtoUSD,DOUBLE
+MonthEndRate_CADtoUSD,DOUBLE

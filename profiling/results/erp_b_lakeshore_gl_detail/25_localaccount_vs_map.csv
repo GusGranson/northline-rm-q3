@@ -1,0 +1,8 @@
+LocalAccount,journal_lines,all_dates_cad,q3_cad,in_account_map,map_group_account,map_group_description,code_starts_73xx,code_is_73xx_rm
+5100-LAB,240,577834.54,518391.26,true,5100,Billable labor,false,false
+7310-RM-PARTS,420,923176.00,783343.67,true,6100,R&M parts,true,true
+7320-RM-SVC,161,383584.41,349620.72,true,6150,R&M outside service,true,true
+7330-RM-LAB,307,697017.74,629028.52,true,6200,R&M labor,true,true
+7335-RM-HYD,23,108339.06,108339.06,false,,,true,true
+7400-FUEL,192,390395.17,350412.34,true,6400,Fuel off-road,false,false
+7500-FLUID,130,285301.48,267111.08,true,6300,Fluids & lubricants,false,false

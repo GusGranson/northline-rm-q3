@@ -1,0 +1,5 @@
+source_raw,row_kind,rows,amount_cad
+[AP],journal line,723,1630972.55
+[INV],journal line,367,856608.66
+[PR],journal line,383,878067.19
+[],other: SUBTOTAL,31,3365648.40

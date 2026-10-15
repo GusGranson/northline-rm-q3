@@ -1,0 +1,2 @@
+bytes,newline_count,has_carriage_returns,ends_with_newline,starts_with_bom,blank_lines_incl_final,parsed_data_rows,parsed_columns
+1121368,11512,true,true,false,1,11511,13

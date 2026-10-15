@@ -1,0 +1,7 @@
+file_line,local_account_raw,GroupAccount,GroupDescription,code_starts_73xx,code_is_73xx_rm
+2,[7310-RM-PARTS],6100,R&M parts,true,true
+3,[7320-RM-SVC],6150,R&M outside service,true,true
+4,[7330-RM-LAB],6200,R&M labor,true,true
+5,[7500-FLUID],6300,Fluids & lubricants,false,false
+6,[7400-FUEL],6400,Fuel off-road,false,false
+7,[5100-LAB],5100,Billable labor,false,false

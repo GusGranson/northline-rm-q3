@@ -1,0 +1,16 @@
+column_name,groups_where_column_differs,groups_total
+ExportedAt,719,719
+Whse_raw,488,719
+Whse_trim_upper,218,719
+Acct_raw,161,719
+TransDate_raw,69,719
+Acct_number,0,719
+CustNum,0,719
+ExtCost,0,719
+Item,0,719
+Oper,0,719
+Qty,0,719
+TransDate_parsed,0,719
+TransType,0,719
+UnitCost,0,719
+Whse_prefix3,0,719

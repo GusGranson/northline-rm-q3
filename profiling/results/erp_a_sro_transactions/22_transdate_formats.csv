@@ -1,0 +1,3 @@
+trans_date_shape,rows,parsed_rows,min_date,max_date,ext_cost_usd,example_min_text,example_max_text
+9999-99-99,10960,10960,2026-06-20,2026-10-03,19498890.95,2026-06-20,2026-10-03
+99/99/9999,551,551,2026-06-21,2026-10-03,1023917.36,06/21/2026,10/03/2026

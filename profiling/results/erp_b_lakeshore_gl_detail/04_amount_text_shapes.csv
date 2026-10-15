@@ -1,0 +1,6 @@
+amount_text_class,row_kind,rows,fails_plain_numeric_parse,amount_cad_lens
+"float artifact, rounds to cents",journal line,27,0,17237.58
+"float artifact, rounds to cents",other: SUBTOTAL,2,0,153347.09
+"plain, <= 2 decimals",journal line,1428,0,3296445.59
+"plain, <= 2 decimals",other: SUBTOTAL,29,0,3212301.31
+text with thousands separator,journal line,18,18,51965.23

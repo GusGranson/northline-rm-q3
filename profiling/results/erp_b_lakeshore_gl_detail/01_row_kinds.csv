@@ -1,0 +1,4 @@
+row_kind,rows,first_excel_row,last_excel_row,amount_cad
+ALL ROWS,1504,2,1505,6731296.80
+journal line,1473,2,1504,3365648.40
+other: SUBTOTAL,31,10,1505,3365648.40

@@ -1,0 +1,8 @@
+file_line,JE_ID,PostedAt,posted_weekday,posted_after_q3_end,posted_after_readme_last_export,Entity,Branch,Account,Amount,Description,account_is_lks_local,lks_map_group_account,lks_map_group_description,account_seen_in_erp_a
+2,JE-0918,2026-09-29 16:02,Tuesday,false,false,US,RIV,6400,6120.33,Fuel accrual – Sept deliveries,false,,,true
+3,JE-0921,2026-09-29 17:40,Tuesday,false,false,US,OAK,5100,-2210.00,Reclass billable labor to job 2087,false,,,true
+4,JE-0925,2026-09-30 09:15,Wednesday,false,false,US,PIN,6500,845.10,Shop supplies – card purchases,false,,,true
+5,JE-0927,2026-09-30 11:48,Wednesday,false,false,CA,LKS,7400-FUEL,3302.00,Fuel – CAD,true,6400,Fuel off-road,false
+6,JE-0931,2026-09-30 22:14,Wednesday,false,true,US,RIV,6150,18450.00,"Accrual – outside hydraulic cylinder repair, invoice pending",false,,,true
+7,JE-0933,2026-09-30 23:05,Wednesday,false,true,US,OAK,6300,1975.40,Fluids accrual,false,,,true
+8,JE-0940,2026-10-02 10:20,Friday,true,true,US,PIN,6100,-640.00,Vendor credit – bearing return,false,,,true

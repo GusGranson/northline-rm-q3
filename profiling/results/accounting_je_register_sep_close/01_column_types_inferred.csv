@@ -1,0 +1,8 @@
+column_name,inferred_type
+JE_ID,VARCHAR
+PostedAt,TIMESTAMP
+Entity,VARCHAR
+Branch,VARCHAR
+Account,VARCHAR
+Amount,DOUBLE
+Description,VARCHAR
