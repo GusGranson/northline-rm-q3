@@ -41,7 +41,7 @@ Ten entries exist in the full log. Some notable examples:
   - row and amount conservation per source
   - format checks on the output files
   - bridge residual exactly 0.00
-  - every bridge item traces to a source record.
+  - every bridge item traces to a source record
 - Failure test: removing one branch mapping made the build fail and pointed to the exact value.
 - Reruns are byte-identical. A search confirmed no rule values are hardcoded.
 - **Independent build: all 13 cells match to the cent** (USD 14,090,228.96).
@@ -51,7 +51,7 @@ Ten entries exist in the full log. Some notable examples:
 ## How much of the code was AI-written?
 
 **Approximately 95% or more.** 
-My code writing skills allow me to read, understand and change the code if I need to, but I could never write it at the speed an LLM can. That's why I focused most of my efforts in:
+My code writing skills allow me to read, understand and change the code if I need to, but I could never write it at the speed an LLM can. That's why I focused most of my efforts on:
 - the specification and stage design
 - every treatment decision
 - the verification design
