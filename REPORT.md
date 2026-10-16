@@ -119,55 +119,35 @@ The full bridge and its evidence are in [docs/bridge.md](docs/bridge.md) and [ou
 
 ## Part 4 · Design memo: automating group R&M reporting
 
-**Scope:** 6 legal entities, 4 ERPs, a few tens of thousands of transaction rows per week. This is a small data volume. The main challenge is not compute capacity but bringing every entity's numbers under one governed definition owned by Finance.
+**Scope:** 6 legal entities, 4 ERPs and a few tens of thousands of transaction rows per week. The volume is small; the challenge is one Finance-owned definition of R&M across every entity.
 
 ### 1. Getting the data out
-- **Main ERP:** no live queries during business hours. IT restores the nightly backup to a reporting copy, and we extract from that copy. Production is never touched, and the data is as of the nightly close.
-- **Other ERPs:** use whatever each one supports cleanly: a read replica, an API, or scheduled file exports to a landing folder.
-- **Landing:** every load goes in raw and untouched, with load metadata (source, extract time, file hash).
-- **Lessons from this exercise, built in from day one:**
-  - Each source gets an explicit snapshot key and dedupe rule. Without it, ERP-A's re-pulled export would have added about USD 1M to R&M.
-  - Each source gets explicit date formats per system. ERP-A and ERP-B use opposite conventions.
+- **Main ERP:** never queried live. Extraction runs against a reporting copy that IT restores from the nightly backup.
+- **Other ERPs:** a read replica, an API or scheduled file exports, as each supports.
+- **Landing:** raw and untouched, with load metadata (source, extract time, file hash).
 
 ### 2. Platform: Microsoft Fabric
-- **Why Fabric:** Northline already runs on Microsoft 365 and Power BI. Fabric uses the same identity (Entra ID), the same security model and the same bill. Its semantic model is the native layer for both Power BI and AI tools.
-- **Alternatives considered:** Databricks or Snowflake are viable, but each adds a second platform, identity model and cost line for a volume that does not require them.
-- **Rough monthly cost:**
-
-| Item | Pay-as-you-go | 1-year reservation |
-|---|---|---|
-| F2 capacity (enough for this volume) | ~USD 260 | ~USD 160 |
-| F4 capacity (headroom for AI workloads) | ~USD 525 | ~USD 315 |
-| OneLake storage | under USD 5 | under USD 5 |
-
-- **Power BI viewers:** below F64, viewers need Power BI Pro (~USD 14/user/month). Many M365 plans already include it.
-- **Sizing:** confirm the SKU from capacity metrics in month one. Start pay-as-you-go and move to a reservation once usage is known.
+- **Why Fabric:** Northline already runs on Microsoft 365 and Power BI. Fabric shares their identity, security and billing, and its semantic model serves Power BI and AI tools alike. Databricks or Snowflake would add a second platform that this volume does not need.
+- **Cost:** F2, ~USD 260/month pay-as-you-go or ~USD 160 on a 1-year reservation; F4 (~USD 525 / ~315) if AI workloads need headroom. Storage is negligible. Below F64, viewers need Power BI Pro (~USD 14/user/month), often already in M365 plans.
 
 ### 3. Where the Finance rules live, and who owns them
-- **R&M definition.** The rules (accounts in scope, capex operations, branch remaps, FX policy, rounding) live as a versioned rules file in Git, separate from pipeline code. This is how the take-home is built (`config/rules.toml`).
-  - **Finance (Controller) owns the content.** Changes go through a reviewed pull request that Finance approves.
-  - **The data team owns the code and runs it.**
-- **Reference data as governed tables, each with a named owner and a completeness check:**
-  - account maps per entity
-  - the FX rate table, with the rate type per use (P&L at average, balance sheet at month-end)
-  - branch and entity maps
-- **Why the completeness checks matter:** this exercise found Lakeshore account 7335-RM-HYD missing from Accounting's map. Accounting's current close includes it regardless. An automated build classifying through that map would silently drop USD 78k of R&M.
-- **Checks fail the load instead of publishing a wrong number.**
-- **One semantic model holds the governed definition of R&M.** Power BI reports and AI tools both query that model, never raw tables. AI answers therefore draw on the same figures that Finance approves.
-- **Manual journal entries:** Finance and Accounting agree one definition. Expose both views as named measures ("R&M per ERP" and "R&M incl. manual JEs"), so the gap is visible by design rather than discovered at close.
+- **Rules as code:** the R&M definition (accounts, capex operations, branch remaps, FX policy, rounding) lives in a versioned rules file in Git, as in this take-home (`config/rules.toml`). Finance owns the content and approves changes by pull request; the data team is the custodian.
+- **Governed reference data:** account maps, FX rates (with the rate type per use) and branch maps, each with an owner and a completeness check that fails the load. Lakeshore account 7335-RM-HYD, missing from Accounting's map, shows why: a map-driven build would silently drop USD 78k of R&M.
+- **One semantic model** holds the governed R&M definition; Power BI and AI tools query it, never raw tables.
+- **Manual journal entries:** one agreed definition, with both views as named measures ("R&M per ERP", "R&M incl. manual JEs"), so the difference is visible by design.
 
 ### 4. First 30 days
 
 | Week | Deliverables |
 |---|---|
-| 1 | Access requests for all 4 ERPs are issued on day 1 (the longest lead-time item). Backup-restore path agreed with IT. Fabric capacity and dev/prod workspaces with Git integration. Inventory of each ERP: owner, extract option, chart-of-accounts mapping status. |
-| 2 | Main ERP and Lakeshore landing raw daily. This exercise's R&M logic ported as the first model, with the rules file signed off by Finance. |
-| 3 | The remaining 2 ERPs landing raw and profiled, with data quality issues logged per source. R&M semantic model and Power BI report. The Finance-to-Accounting bridge automated as a recurring reconciliation. |
-| 4 | Data quality checks alerting owners. Account maps and treatment decisions for the remaining entities drafted with their accountants. A pilot of AI questions on the semantic model with one Finance user. |
+| 1 | Access requests for all 4 ERPs on day 1 (the longest lead time); backup restore agreed with IT; Fabric workspaces. |
+| 2 | Main ERP and Lakeshore landing daily; R&M logic ported, rules file signed off by Finance. |
+| 3 | Remaining ERPs landing and profiled; semantic model, Power BI report, automated bridge to Accounting. |
+| 4 | Data quality alerts to owners; remaining account maps in review; AI pilot with one Finance user. |
 
-**Day-30 outcome:** all 4 ERPs land daily, raw and profiled. Group R&M is automated, reconciled to the close and published for the entities on the main ERP and Lakeshore. The remaining entities have their data quality issues logged, their treatments in review and a dated go-live. Landing data is quick; establishing confidence in it requires profiling and sign-off. In this exercise, profiling of two sources identified ten data issues (listed in Part 2).
+**Day-30 outcome:** all 4 ERPs land daily, raw and profiled. R&M is automated, reconciled to the close and published for the main ERP and Lakeshore; the other entities have issues logged, treatments in review and a dated go-live. Confidence comes from profiling and sign-off: profiling two sources here identified ten data issues (Part 2).
 
-**Main risk:** access and sign-off, not build time. Extract access and map approval depend on IT and each entity's accounting, which is why those requests are issued on day 1.
+**Main risk:** access and sign-off, not build time, which is why those requests are issued on day 1.
 
 ## Part 5 · How I used AI
 
@@ -177,9 +157,9 @@ I worked in two tiers:
 
 | Tool | Role |
 |---|---|
-| Claude chat (Opus) | Planning and review partner: strategy, interpreting findings, designing the verification, drafting instructions for Claude Code, and reviewing its output. |
-| Claude Code, Opus at high effort | Profiling, the pipeline build, the bridge search and the sensitivity analysis. |
-| Claude Code, Sonnet | The independent verification build. A different model was used on purpose, to reduce correlated errors. |
+| Claude chat (Opus 5.5, medium effort) | Planning and review partner: strategy, interpreting findings, designing the verification, drafting instructions for Claude Code, and reviewing its output. |
+| Claude Code (Opus 5.5, extra-high effort) | Profiling, the pipeline build, the bridge search and the sensitivity analysis. |
+| Claude Code (Sonnet 5.5, medium effort) | The independent verification build. A different model was used on purpose, to reduce correlated errors. |
 
 I acted as the link between the two tiers: I decided every data treatment, edited the instructions and reviewed both tools' output critically. A `CLAUDE.md` in the repo set the agent's guardrails:
 - Work stage by stage, and stop after each stage.

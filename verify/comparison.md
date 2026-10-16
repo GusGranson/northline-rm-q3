@@ -6,7 +6,7 @@ Compared on 2026-10-15 against the pipeline output at commit `3b72320`.
 
 ## What the verify was given, and what it wasn't
 
-The verify is an independent build of the same spec by a different model (Sonnet). It is the script `verify/build_rm_q3.py` (80 lines, plain Python with `csv`, `Decimal` and openpyxl; no DuckDB). Its notes are in `verify/verify_notes.md`.
+The verify is an independent build of the same spec by a different model, Sonnet 5.5, medium effort. It is the script `verify/build_rm_q3.py` (80 lines, plain Python with `csv`, `Decimal` and openpyxl; no DuckDB). Its notes are in `verify/verify_notes.md`.
 
 | | Detail |
 |---|---|
